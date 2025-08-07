@@ -1,64 +1,74 @@
 <script lang="ts">
-  import Hello from './lib/components/Hello.svelte';
-  import DataPreview from './lib/components/DataPreview.svelte';
-  import { studentsData } from './lib/data';
+  import StudentCard from './lib/components/StudentCard.svelte';
+  import * as data from './lib/data';
+  import * as types from './lib/types';
+  import * as utils from './lib/utils';
 
-  type Student = {
-    id: string;
-    name: string;
-    age: number;
-    averageScore: number;
-    activeLabel: 'Yes' | 'No';
-  };
+  export const mapStudentDataItemsToStudents = (
+    studentsData: readonly types.StudentDataItem[],
+  ): types.Student[] =>
+    studentsData.map(student => ({
+      id: String(student.id),
+      name: `${student.firstName} ${student.lastName}`,
+      age: utils.calculateAge(new Date(student.birthdate)),
+      averageScore: utils.calculateStudentAverageScore(student.scores),
+      activeLabel: student.isActive ? 'Yes' : 'No',
+    }));
 
-  // Replace mock example objects with the actual data from the studentsData array
-  const students: Student[] = [
-    {
-      id: '1',
-      name: 'Mary Example',
-      age: 50,
-      activeLabel: 'Yes',
-      averageScore: 10,
-    },
-    {
-      id: '2',
-      name: 'Jade Test',
-      age: 21,
-      activeLabel: 'No',
-      averageScore: 10,
-    },
-  ];
+  const students: types.Student[] = mapStudentDataItemsToStudents(
+    data.studentsData,
+  );
 </script>
 
 <main>
-  <!-- Delete <Hello> -->
-  <Hello></Hello>
-
-  <!-- The list of students -->
-  {#each students as student}
-    <!-- Example content to showcase Svelte — replace with your own template  -->
-    <div>
-      <div>{student.name.toUpperCase()}</div>
-
-      <p>
-        {#if student.age > 25}
-          Mature Student - {student.age} years old
-        {:else}
-          Young Student - {student.age} years old
-        {/if}
-      </p>
-
-      Avg score: {student.averageScore}
-      Active: {student.activeLabel}
+  <div class="students-container">
+    <h1>Students</h1>
+    <div class="students-grid">
+      {#each students as student}
+        <StudentCard {student}></StudentCard>
+      {/each}
     </div>
-  {/each}
-
-  <!-- Delete <DataPreview> -->
-  <DataPreview value={studentsData}></DataPreview>
+  </div>
 </main>
 
 <style>
+  :global(body) {
+    background-color: #efebe5;
+    margin: 0;
+  }
+
   main {
     padding: 30px;
+    min-height: 100vh;
+  }
+
+  .students-container {
+    max-width: 1024px;
+    margin: 0 auto;
+  }
+
+  h1 {
+    margin: 0 0 30px 0;
+    font-size: 2em;
+    font-weight: bold;
+    color: #4a3728;
+  }
+
+  .students-grid {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 768px) {
+    .students-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .students-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
   }
 </style>

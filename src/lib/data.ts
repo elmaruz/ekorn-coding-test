@@ -1,19 +1,6 @@
-export interface Scores {
-  math: number;
-  english: number;
-  science: number;
-}
+import * as types from './types';
 
-export interface StudentDataItem {
-  id: number;
-  firstName: string;
-  lastName: string;
-  birthdate: string;
-  scores: Scores;
-  isActive: boolean;
-}
-
-export const studentsData: readonly StudentDataItem[] = [
+export const studentsData: readonly types.StudentDataItem[] = [
   {
     id: 1,
     firstName: 'Hermione',
