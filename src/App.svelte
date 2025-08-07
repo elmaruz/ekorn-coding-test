@@ -18,13 +18,25 @@
   const students: types.Student[] = mapStudentDataItemsToStudents(
     data.studentsData,
   );
+
+  let showOnlyActive = false;
+
+  $: filteredStudents = showOnlyActive
+    ? students.filter(student => student.activeLabel === 'Yes')
+    : students;
 </script>
 
 <main>
   <div class="students-container">
     <h1>Students</h1>
+
+    <label class="filter-toggle">
+      <input type="checkbox" bind:checked={showOnlyActive} />
+      Show only active students
+    </label>
+
     <div class="students-grid">
-      {#each students as student}
+      {#each filteredStudents as student}
         <StudentCard {student}></StudentCard>
       {/each}
     </div>
@@ -48,10 +60,22 @@
   }
 
   h1 {
-    margin: 0 0 30px 0;
+    margin: 0 0 10px 0;
     font-size: 2em;
     font-weight: bold;
     color: #4a3728;
+  }
+
+  /* ✅ Styling for the checkbox */
+  .filter-toggle {
+    display: block;
+    margin-bottom: 20px;
+    color: #4a3728;
+    font-weight: 500;
+  }
+
+  .filter-toggle input {
+    margin-right: 10px;
   }
 
   .students-grid {
