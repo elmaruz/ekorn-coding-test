@@ -21,14 +21,14 @@
       <span class="student-info-value">{student.averageScore}</span>
     </div>
     <div class="info-row">
+      <span class="student-info-key">Active:</span>
+      <span class="student-info-value">{student.activeLabel}</span>
+    </div>
+    <div class="info-row">
       <span class="student-info-key">Passed:</span>
       <span class="student-info-value"
         >{student.averageScore >= 60 ? 'Yes' : 'No'}</span
       >
-    </div>
-    <div class="info-row">
-      <span class="student-info-key">Active:</span>
-      <span class="student-info-value">{student.activeLabel}</span>
     </div>
     <div class="info-row">
       <span class="student-info-key">ID:</span>
